@@ -1,0 +1,48 @@
+<?php
+
+/**
+ * @file 
+ * Install file for the jQuery Multi module.
+ */
+
+
+/**
+ * Implements hook_uninstall().
+ */
+function jqmulti_uninstall() {
+  $vars = array(
+    'version',
+    'libraries',
+    'load_always',
+  );
+  foreach ($vars as $var) {
+    variable_del('jqmulti_' . $var);
+  }
+  cache_clear_all('jqmulti_files', 'cache');
+}
+
+
+/**
+ * Implements hook_requirements().
+ */
+function jqmulti_requirements($phase) {
+  module_load_include('module', 'jqmulti');
+  $requirements = array();
+  $requirements['jqmulti_jquery'] = array(
+    'title' => 'jQuery Multi jQuery library',
+  );
+  switch ($phase) {
+    case 'install':
+    case 'runtime':
+      $version = jqmulti_get_version(TRUE);
+      if (!$version) {
+        $requirements['jqmulti_jquery']['description'] = 'jQuery Multi: Could not locate a jQuery library. Please look at the README for instructions and ensure you have placed the library correctly.';
+        $requirements['jqmulti_jquery']['severity'] = REQUIREMENT_ERROR;
+      }
+      else {
+        $requirements['jqmulti_jquery']['value'] = $version;
+        $requirements['jqmulti_jquery']['severity'] = REQUIREMENT_OK;
+      }
+  }
+  return $requirements;
+}

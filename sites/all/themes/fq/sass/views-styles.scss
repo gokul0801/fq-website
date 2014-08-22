@@ -1,0 +1,382 @@
+/**
+ * @file
+ * Views Styling
+ */
+
+@import "base";
+
+
+/*
+ * Views' admin tabs
+ *
+ * The views admin tabs use the same classes as the secondary tabs. We prevent
+ * some of our tab styling from bleeding into (and breaking) the Views admin
+ * pages. If your sub-theme isn't used for admin pages, you can remove this
+ * entire section.
+ */
+
+
+.views-displays .secondary {
+  li {
+    float: none;
+    margin: 0 6px 0;
+  }
+
+  a:link,
+  a:visited {
+    @include single-text-shadow(none);
+    padding: 2px 7px 3px;
+  }
+
+  .open > a {
+    @include border-radius(7px 7px 0 0);
+    &:hover {
+      color: #333;
+    }
+  }
+
+  .action-list li {
+    margin: 0;
+    &:first-child {
+      @include border-radius(0 7px 0 0);
+    }
+    &:last-child {
+      @include border-radius(0 0 7px 7px);
+    }
+  }
+}
+
+
+/**
+ * styling for landing pages
+ * TZ 6/18/13
+ * converted to sass 6/22, and further changes
+ */
+
+
+.sidebars{
+  div.view-people-landing, //more on people
+    div.view-strategy-landing,
+    div.view-insights-landing {
+      h2{
+        text-align: center;
+        font-size: 1.125em;
+        a:link, a:visited, a:active{
+          color: #000;
+          text-decoration: none;
+          font-weight: $fnt_bold;
+          font-size: 1.125em;
+        }
+      }
+
+      .views-row {
+        .views-field-title {
+          display: inline-block;
+          max-width: 250px;
+          overflow: hidden;
+          white-space: nowrap;
+          a{
+            color: #000;
+          }
+        }
+
+        .views-field-path a{
+          text-indent: 100%; white-space: nowrap; overflow: hidden; display: inline-block;
+          background: url("../images/black_arrow.png") top left no-repeat;
+          width: 18px; height: 17px;
+          padding-top: 0.25em; vertical-align: middle;
+          float: right;
+        }
+      }
+      .views-row:first-child {
+        border-top: 1px solid black;
+      }
+    }
+  h3 {
+    margin-top:0;
+    text-align:center;
+    }
+  .view {
+    background-color: #c7c8ca;
+    padding: 40px 10px 10px;
+    //@FIXME 1 -- margin-bottom: 1em;
+    //@FIXME 1 -- margin-right: 2em;
+  }
+
+  div.views-row {
+    padding-bottom: .5em;
+    padding-top: .5em;
+
+    div.field-content span.file {
+      float: right;
+    }
+  }
+  div.view-display-id-block_9 {//team profile block
+      .views-field-title, .views-field-title *, .views-field-body {
+        display: inline;
+      }
+
+      .views-field-body, a {
+        font-size: 0.75em;
+      }
+
+      .views-field-body {
+        //@TODO should be set on parent not ALL children | margin-left: 1em;
+      }
+
+      .views-field-path {
+        float: right;
+      }
+
+  }
+  div.view-display-id-block_10,
+  .view-display-id-block_13{//more on
+   .views-row {
+      border-bottom: 1px solid black;
+
+      .views-field-title {
+        display: inline-block;
+        max-width: 250px;
+        overflow: hidden;
+        white-space: nowrap;
+        font-size: 1.094em !important;
+        a{
+          color: #000;
+        }
+      }
+
+      .views-field-path a{
+        text-indent: 100%; white-space: nowrap; overflow: hidden; display: inline-block;
+        background: url("../images/black_arrow.png") top left no-repeat;
+        width: 18px; height: 17px;
+        padding-top: 0.25em; vertical-align: middle;
+        float: right;
+      }
+    }
+
+    .views-row:first-child {
+      border-top: 1px solid black;
+    }
+  }
+  .view-id-strategy_summaries_commentary.view-display-id-block_1{
+    background-color: #fff;
+
+    img{
+      float: left;
+      padding: 0 1em;
+    }
+    .views-field-field-product-commentary{
+      .field-content{
+        margin-right: 1em;
+      }
+    }
+  }
+}
+
+.view-people-landing,
+.view-strategy-landing {
+
+  a:link, a:active, a:visited {
+    text-decoration: none;
+    color: #000;
+  }
+
+  p {
+    margin: 0;
+  }
+
+  div.views-field-body {
+    display: inline;
+
+    * {
+      display: inline;
+
+      p {
+        display: inline;
+        }
+      }
+  }
+
+  h2 {
+    @include adjust-font-size-to( $h3-font-size );
+    margin-bottom: 0.5em;
+    //line-height:$h3-font-size;
+  }
+
+  h2:first-of-type {
+    margin-top: 0;
+  }
+
+  h4 {
+    margin: 0;
+  }
+
+  div.views-field-path {
+    display: inline;
+
+    * {
+      display: inline;
+      }
+
+    a {
+      font-family: $fnt_bold;
+      font-size: 0.875em;
+
+      &:after {
+        content: "\00a0>";
+      }
+    }
+  }
+
+  .attachment-before {
+    .view {
+      border-bottom: 1px solid black;
+      //@FIXME 1 should be set on parent not ALL children | margin-left: 2em;
+      //@FIXME 1 should be set on parent not ALL children | margin-bottom: 1.5em;
+      //@FIXME 1 should be set on parent not ALL children | margin-right: 1em;
+      padding-bottom: 28px;
+      padding-top: 28px;
+
+      &:last-child {
+        border-bottom: none;
+        padding-bottom: 0;
+        width: 95%;
+      }
+      div.views-row {
+
+      }
+
+      div.views-field-title-1 {
+        display: inline;
+
+        * {
+          display: inline;
+        }
+      }
+    }
+
+    & .view:first-child {
+        padding-top: 0;
+    }
+
+  }
+  div.attachment.attachment-after{
+
+    .view {
+      background-color: #c7c8ca;
+      padding: 0.5em;
+      margin-bottom: 1em; margin-right: 2em;
+    }
+
+    div.views-row {
+      padding-bottom: .5em;
+      padding-top: .5em;
+
+      div.field-content span.file {
+        float: right;
+      }
+    }
+
+    div.view-display-id-block_9 {//team profile block
+        .views-field-title, .views-field-title *, .views-field-body {
+          display: inline;
+        }
+
+        .views-field-body, a {
+          font-size: 0.75em;
+        }
+
+        .views-field-body {
+          margin-left: 1em;
+        }
+
+        .views-field-path {
+          float: right;
+        }
+    }
+
+
+
+    div.view-display-id-sidebar_white_papers,
+    div.view-display-id-sidebar_fact_sheets {
+      .node-white-paper-factsheet {
+        h2.node-title {
+          // @TODO this should be @extend h3 but since we're not explicitely defining h2!!
+            display: block; font-size: 1em; font-weight: bold; margin: 1em 0; // copied from chrome default!
+
+          a {
+            pointer-events: none !important; cursor: default !important; // these essentially nullify anchor tag, mostly supported
+          }
+        }
+
+        h2:first-child {
+          margin-top: 0;
+        }
+
+        .field-type-text-with-summary {
+          display: none;
+        }
+
+        ul.links.inline {
+          .first { // @NOTE: we're assuming this is the download line
+            a:before {
+              content: url("../images/download.png");
+              width: 22px; height: 26px;
+              display: inline-block;
+              padding-right: 0.25em;
+              vertical-align: bottom;
+            }
+            a:after {
+              content: "\00a0>";
+            }
+          }
+          .last { // @NOTE we're assuming this is the comment line
+            display: none;
+          }
+        }
+      }
+    }
+  }
+}
+.view-display-id-block_11{
+  h2{
+    text-align: center;
+    font-size: 1.125em;
+    a:link, a:visited, a:active{
+      color: #000;
+      text-decoration: none;
+      font-weight: $fnt_bold;
+      font-size: 1.125em;
+    }
+  }
+}
+/**
+ * styling for people/testimonials
+ * TZ 6/23/13
+ * changes
+ * TB 6/25/13
+ */
+.view-id-testimonials{
+  padding-left: 2em; padding-right: 2em;
+
+  div.view-content {
+    div.views-field-body {
+
+      a:link, a:active, a:visited {
+        text-decoration: none;
+        color: #000;
+      }
+      p:before {
+        content: "\201C";
+      }
+      p {
+        font-family: $fnt_bold;
+        font-size: 1.5em;
+        margin-bottom: 0.75em;
+      }
+      p:after {
+        content: "\201D";
+      }
+    }
+  }
+}

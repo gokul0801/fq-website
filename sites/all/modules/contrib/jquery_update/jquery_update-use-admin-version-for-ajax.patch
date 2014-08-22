@@ -1,0 +1,23 @@
+diff --git sites/all/modules/contrib/jquery_update/jquery_update.module sites/all/modules/contrib/jquery_update/jquery_update.module
+index 76644f8..65ba93a 100644
+--- sites/all/modules/contrib/jquery_update/jquery_update.module
++++ sites/all/modules/contrib/jquery_update/jquery_update.module
+@@ -96,6 +96,18 @@ function jquery_update_library_alter(&$javascript, $module) {
+     }
+   }
+
++  // Use admin version if this is an ajax request from an admin page.
++  if (!empty($admin_version) && in_array('ajax', arg()) && !empty($_SERVER['HTTP_REFERER'])) {
++    $url_parts = parse_url($_SERVER['HTTP_REFERER']);
++    $this_path = $url_parts['path'];
++    if (strpos($this_path, base_path()) === 0) {
++      $this_path = substr($this_path, strlen(base_path()));
++    }
++    if (path_is_admin($this_path)) {
++      $version = $admin_version;
++    }
++  }
++
+   // Always add a new jquery_version array to ajaxPageState.
+   // This is what we used to determine which version to use
+   // for any ajax callback.

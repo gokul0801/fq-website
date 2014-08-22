@@ -1,0 +1,116 @@
+/* Put all our custom theme variables in this file
+   All theme variables can be overridden here that have the property:  !default
+
+*/
+
+/***********************************************************************
+  LAYOUT VARIABLES
+***********************************************************************/
+
+/* --------------------------------------------------------------desktop
+*/
+$zen-gutter-width: 80px;  // @FIXME bug webkit sidebar layout - verify fix after DB updates
+$content_pad_desktop: 0px 50px 50px 43px; // @FIXME 2 - not yet implemented START
+$content_margin_desktop: 0px 0 0px 0;     //
+$h1_margin_desktop: 40px 0 35px 0;        //
+$h1_align_desktop: center;                //
+$h2_margin_desktop: 35px 0 35px 0;        //
+$text_margin_desktop: 25px 0 25px 0;      //
+$image_margin_desktop: 25px 0 25px 0;     // @FIXME 2 - not yet implemented END
+
+/* ---------------------------------------------------------------tablet
+*/
+$content_pad_tab: 40px 50px 50px 43px;    // @FIXME 2 - not yet implemented START
+$h1_margin_tab: 55px 0 0 0;               //
+$h1_align_tab: center;                    //
+$h2_margin_tab: 35px 0 0 0;               //
+$text_margin_tab: 25px 0 0 0;             //
+$image_margin_tab: 25px 0 0 0;            // @FIXME 2 - not yet implemented END
+/* -----------------------------------------------------------------cell
+*/
+$content_pad_cell: 20px 17px 20px 17px;   // @FIXME 2 - not yet implemented START
+$h1_margin_cell: 43px 0 0 0;              //
+$h1_align_cell: center;                   //
+$h2_margin_cell: 35px 0 0 0;              //
+$text_margin_cell: 25px 0 0 0;            //
+$image_margin_cell: 25px 0 0 0;           // @FIXME 2 - not yet implemented
+
+/***********************************************************************
+  PRESENTATION VARIABLES
+***********************************************************************/
+
+/* --------------------------------------------------------------desktop
+*/
+$logo_img_desk: "/sites/all/themes/fq/images/FQ_logo.png";
+$logo_ht_desk:  60px;  // 69px
+$logo_wd_desk: 160px;  //183px;
+$logo_pad_desk: 10px 10px 5px 20px;
+
+/* ---------------------------------------------------------------tablet
+*/
+$logo_img_tab: "/sites/all/themes/fq/images/FQ_logo.png";
+$logo_ht_tab: $logo_ht_desk;  // @TODO need specs from comp
+$logo_wd_tab: $logo_wd_desk;  // @TODO need specs from comp
+$logo_pad_tab: 10px 0 0 10px;
+
+/* -----------------------------------------------------------------cell
+*/
+$logo_img_cell: "/sites/all/themes/fq/images/fq_small_logo.png";
+$logo_ht_cell: 34px;
+$logo_wd_cell: 71px;
+$logo_pad_cell: 5px 0 5px 15px;
+
+// navigation
+$btn_navigation_desk: 60px 30px 0;
+$btn_navigation_tab: 60px 30px 0; // @TODO - setup
+$btn_navigation_cell: 26px 6px 0; // @TODO - setup
+$btn_navigation_hambuger_tab: 52px 30px 0; // @TODO - setup  67w x 70h  (70x70?)
+$btn_navigation_hambuger_cell: 52px 18px 0; // @TODO - setup
+$btn_navigation_user_in_desk: 42px 30px 0;
+$btn_navigation_user_out_desk: $btn_navigation_desk;
+
+/***********************************************************************
+  FONTS
+***********************************************************************/
+$fnt_light: DINWeb-Light;  // @TODO -- revisit font setup
+$fnt_medium: DINWeb-Medium;
+$fnt_bold: DINWeb-Bold;
+
+$fnt_size_navigation: 13px; //0.813em
+$h1-font-size: 72px;
+$h2-font-size: 40px;
+$h3-font-size: 22px;
+
+/***********************************************************************
+  COLORS
+
+  Organize by section
+    e.g, page, navigation, sidebar, footer, form, etc
+  Variables should typically have both a default fg and bg
+***********************************************************************/
+$clr_navigation_bg:     #d6d6d6;
+//TODO $clr_navigation_fg:
+$clr_navigation__btn_fg: #fff;
+$clr_navigation__btn_bg: rgba(0,0,0, 0.3);
+$clr_navigation__ubtn_bg: rgba(0,0,0, 0.3);
+
+$clr_footer_bg: #2a2a2a;
+$clr_footer_fg: #333333;
+$clr_footer_title: #FF5A00;
+
+$clr_form_btn_bg: #b9e4ec;
+$clr_form_btn_fg: #006892;  //@TODO verify against comp #342F93;
+
+$wysiwyg_bg_wrap: rgba(239,239,239,.7);
+$wysiwyg_bg__a: rgba(175,239,239,.3);
+$wysiwyg_bg__b: rgba(239,175,239,.3);
+$wysiwyg_bg__c: rgba(239,239,175,.3);
+
+//slideshow titles
+$clr_slideshow_1_title: #dfdfdf;
+$clr_slideshow_2_title: #848485;
+
+$light_gray: #b8b9bb;
+$dark_gray: #757575;
+$body_color: #666;
+$link_color: #006892;

@@ -1,0 +1,1349 @@
+/**
+ * @file
+ * Positioning for responsive layout .
+ *
+ * Define CSS classes to create a table-free, 3-column, 2-column, or single
+ * column layout depending on whether blocks are enabled in the left or right
+ * columns.
+ *
+ * This layout uses the Zen Grids plugin for Compass: http://zengrids.com
+ */
+
+@import "base";
+
+
+// We are going to create a 980px wide, 5 column grid with 20px gutters between
+// columns (applied as 10px of left/right padding on each column).
+$zen-column-count:  5;
+$zen-gutter-width:  20px !default;
+
+
+// IE6-7 do not support box-sizing: border-box. We can fix this in 1 of 3 ways:
+// - Drop support for IE 6/7. :-) In the _base.scss, set $legacy-support-for-ie6
+//   and $legacy-support-for-ie7 to false.
+// - (Preferred) Install the box-sizing polyfill and set the variable below to
+//   the absolute path URL to the boxsizing.htc file.
+//   @see https://github.com/Schepp/box-sizing-polyfill
+//   $box-sizing-polyfill-path: "/path/to/boxsizing.htc";
+// - Use the same CSS unit for grid width and gutter width (use px for both or
+//   use % for both, etc.) and set the box-sizing variable to content-box.
+//   $zen-box-sizing: content-box;
+
+
+// You can generate more efficient CSS if you manually apply the
+// zen-grid-item-base mixin to all grid items from within a single ruleset.
+$zen-auto-include-item-base: false;
+// $zen-auto-include-flow-item-base: false;
+
+
+/*
+ * Center the page.
+ */
+
+#page,
+.region-bottom {
+  /* For screen sizes larger than 1200px, prevent excessively long lines of text
+     by setting a max-width. */
+  width: 100%;
+}
+
+/*
+ * Apply the shared properties of grid items in a single, efficient ruleset.
+ */
+// See the note about $zen-auto-include-item-base above.
+
+#header,
+#content,
+#navigation,
+.region-sidebar-first,
+.region-sidebar-second,
+#footer {
+//  @include zen-grid-item-base();
+}
+
+/*
+ * Containers for grid items and flow items.
+ */
+
+#header,
+#main,
+#footer {
+  @include zen-grid-container();
+}
+
+/*
+ * Navigation bar
+ */
+#main {
+  //@FIXME set with variable::  padding-top: 1.75em; /* padding for container */
+}
+
+#navigation {
+  position: fixed;
+  width:100%;
+  //@FIXME 1 height: 1.75em;
+  z-index: 5;
+  margin: 0 0 76px;
+}
+#main{
+  margin-top:150px !important;
+}
+.page-home #main{
+  margin-top:76px !important;
+}
+body.front #navigation {
+  margin: 0;
+}
+.admin-menu #navigation {
+}
+
+#footer{
+  padding: 0;
+}
+@media all and (min-width: 0px) and (max-width: 759px) {  //MOBILE |||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+  //layout changes
+  #content {
+  }
+  .sidebar-second:not(.layout-2-column){
+    #content { /* Span 4 columns, starting in 1st column from left. */
+      @include zen-grid-item(5, 1);
+    }
+
+    .region-sidebar-second { /* Span 1 column, starting in 5th column from left. */
+      @include zen-clear;
+      @include zen-grid-item(5, 1);
+    }
+  }
+  //2 Columns with sidebar
+  .sidebar-second.layout-2-column{
+    #content{
+      .attachment-before{
+        @include zen-grid-item(5, 1);
+      }
+      .attachment-after{
+        @include zen-grid-item(5, 1);
+      }
+    }
+    .region-sidebar-second{
+      @include zen-clear;
+      @include zen-grid-item(5, 1);
+    }
+  }
+
+  .page-title,
+  #page-title{
+    font-size: 1.5em;
+    line-height: 1;
+  }
+  .submenu-open{
+    height: 64em !important;
+    opacity: 1 !important;
+  }
+  .submenu{
+    //@TODO test cross browser - probably not needed
+    //top: 2.5em;
+  }
+  #main {
+    max-width: 95%;
+    margin: 0 auto 16px;
+    padding: 32px 20px;
+    margin-top: 60px !important;
+  }
+  .front #main {
+    max-width: 100%;
+    padding: 0;
+    margin-top: 40px !important;
+  }
+  #home{
+    padding: $logo_pad_cell;
+  }
+  #fq_logo{
+    background: url($logo_img_cell) center no-repeat;
+    background-size: 100% 100%;
+    height: $logo_ht_cell;
+    width: $logo_wd_cell;
+    max-width: 100%;
+    padding: 0;
+  }
+  .hamburger-wrapper{
+    top: 44px;
+  }
+  ol li a,
+  ol li label{
+    padding: 0.6em;
+  }
+  label[for="hamburger_radio"]{
+    background-size: 30% !important;
+    padding: 1.6em 1.5em 1.5em !important;
+  }
+  // Footer insights/news
+  .insights,
+  .insights-closed{
+    height: auto;
+    .views-field-title {
+      a:link, a:visited, a:active {
+        font-size: 11px
+      }
+     }
+
+/*.insights-closed{
+  .views-field-path{
+    a:link, a:visited, a:active{
+      background-color: #fff;
+      padding: 0.5em 0.5em 0.3em 0.5em;
+    }
+    a:after {
+      content: none;
+    }
+  }
+}*/
+}
+
+
+  html body.admin-menu,
+  body.admin-menu,
+  body.admin-menu div.admin-menu {
+    margin-top:0 !important;
+  }
+  #footer .menu,
+  #admin-menu,
+  .client-login{
+    display: none;
+  }
+
+
+  .not-logged-in.user-login {
+    .forget-password {
+      position: relative;
+      bottom: auto;
+      right: auto;
+      width: 100%;
+    }
+    div.password-confirm, .password-strength {
+      display: none;
+    }
+  }
+
+  #navigation{
+    label[for="strategy_radio"],
+    label[for="people_radio"] {
+      padding: $btn_navigation_cell;
+      height: 44px;
+    }
+  }
+  label[for="hamburger_radio"]{
+    padding: 0 !important;
+    width: 50px;
+    height: 44px;
+  }
+
+  .view-partners-listing-page {
+    .views-row {
+      padding: 10px;
+      img {
+        float: none;
+      }
+    }
+  }
+
+  #navigation{
+    ul{
+      display: block;
+      padding: 0;
+    }
+    .submenu{
+      overflow-y: scroll;
+      overflow-x: hidden;
+      max-height: 540px !important;
+    }
+    .left_half_people{
+      color: $dark_gray;
+      padding: 20px;
+      ul{
+        padding: 0;
+      }
+      a {
+        color: $light_gray;
+      }
+      .people_submenu_1{
+        padding: 35px 0 0;
+        .views-row-1{
+          margin-bottom: 20px;
+          .views-field-title{
+            font-family: $fnt_light;
+            font-size: 34px;
+            line-height: 100%;
+            a:link, a:visited, a:active{
+              display: block;
+            }
+            a:after{
+              margin-left: 0.1em;
+            }
+            }
+          }
+        }
+      .people_submenu_2{
+        @include zen-clear;
+        .views-row {
+          margin: 0 0 10px;
+        }
+        .views-field-title {
+          font-size: 28px;
+          text-transform: uppercase;
+          margin: 0 0 10px;
+        }
+        .views-field-body {
+          font-size: .9em;
+        }
+      }
+      .people_submenu_3 {
+        a {
+          margin-bottom: 16px;
+          font-size: 18px;
+        }
+        a:after{
+          content: url('../../images/link_arrow_small.png');
+          margin-left: 0.5em;
+        }
+      }
+    }
+    .right_half_people{
+      color: $dark_gray;
+      padding: 0 20px;
+      ul{
+        padding: 0;
+      }
+      a {
+        color: $light_gray;
+      }
+      .people_submenu_4{
+        width: 100%;
+        padding-top: 35px;
+        p{
+          margin: 0;
+        }
+        .menu-company-pre {
+          margin: 0 0 20px;
+          a {
+            font-size: 28px;
+            text-transform: uppercase;
+            margin: 0 0 10px;
+          }
+        }
+        .menu-company-list {
+          margin: 0 0 40px;
+          a {
+            font-size: 18px;
+            text-transform: uppercase;
+            margin: 0 0 10px;
+            span {
+              font-size: 10px;
+            }
+          }
+          a:after{
+            content: url('../../images/link_arrow_small.png');
+            margin-left: 0.5em;
+          }
+        }
+        .menu-company-post {
+          a {
+            font-size: 28px;
+            text-transform: uppercase;
+            margin: 0 0 10px;
+          }
+          p a {
+            font-size: 10px;
+            margin: 0;
+            display: inline;
+          }
+          p a:after{
+            content: url('../../images/link_arrow_small.png');
+            margin-left: 0.5em;
+          }
+        }
+      }
+    }
+
+    .left_half_strategy{
+      color: $dark_gray;
+      padding: 20px;
+      a {
+        color: $light_gray;
+      }
+      .strategy_submenu_1{
+        padding: 35px 0 0;
+        .views-row-1{
+          margin-bottom: 20px;
+          .views-field-title{
+            font-family: $fnt_light;
+            font-size: 34px;
+            text-transform: uppercase;
+            line-height: 100%;
+            a:link, a:visited, a:active{
+              display: block;
+            }
+            a:after{
+              margin-left: 0.1em;
+            }
+            }
+          }
+        }
+      .strategy_submenu_2{
+        @include zen-clear;
+        .title {
+          font-size: 28px;
+        }
+        a:after{
+          //content: url('../../images/link_arrow_small.png');
+          margin-left: 0.5em;
+        }
+        p{
+          margin: 0 0 16px;
+        }
+      }
+    }
+    .right_half_strategy{
+      color: $dark_gray;
+      padding: 0 20px;
+      p {
+        margin: 0;
+      }
+      a {
+        color: $light_gray;
+      }
+      .menu-strategy-pre {
+        margin: 0 0 10px;
+        a {
+          font-size: 28px;
+        }
+      }
+      .menu-strategy-list {
+        margin: 0 0 10px;
+        a {
+          font-size: 18px;
+          float: left;
+          width: 50%;
+          margin: 0 0 10px;
+          span {
+            font-size: 10px;
+            color: #fff;
+            display: block;
+          }
+          span:after{
+            content: url('../../images/link_arrow_small.png');
+            margin-left: 0.5em;
+          }
+        }
+        br {
+          display: none;
+        }
+      }
+      .menu-strategy-post {
+        clear: both;
+        @include zen-clear;
+        a {
+          font-size: 28px;
+        }
+        p a {
+          display: inline;
+        }
+        p a:after{
+          content: url('../../images/link_arrow_small.png');
+          margin-left: 0.5em;
+        }
+      }
+    }
+  }
+
+  // Footer insights/news
+  .insights{
+    height: auto;
+    padding: 0 40px;
+    #insights {
+      display: block;
+      text-align: center;
+    }
+  .views-field-path {
+    margin-top: 0.5em;
+  }
+  .views-row{
+    line-height: 1em;
+    padding: 1em 0.5em 0.5em;
+    margin-bottom: 0;
+  }
+    .block_1{
+      .views-field-name,
+      .field-name-body,
+      .views-field-path,
+      .view-footer{
+        display: block;
+      }
+    }
+    .block_2,
+    .block_3,
+    .block_4{
+      display: block;
+    }
+  }
+}
+
+
+@media all and (min-width: 640px) and (max-width: 770px) {  //TABLET PORTRAIT|||||||||||||||||||||||||||||||||||||||||||
+  body #footer {
+    position: static;
+    .insights {
+      .block_1{
+        .views-field-name,
+        .field-name-body,
+        .views-field-path,
+        .view-footer{
+          display: block;
+        }
+      }
+      .block_2,
+      .block_3,
+      .block_4{
+        display: block;
+      }
+    }
+  }
+}
+
+
+@media all and (min-width: 760px) and (max-width: 1059px) {  //TABLET|||||||||||||||||||||||||||||||||||||||||||||||||||
+
+  $zen-column-count: 6;
+
+  //layout changes
+    #content {}
+    .sidebar-second:not(.layout-2-column){
+    #content { /* Span 4 columns, starting in 1st column from left. */
+      @include zen-grid-item(4, 1);
+    }
+
+    .region-sidebar-second { /* Span 1 column, starting in 5th column from left. */
+      @include zen-grid-item(2, 5);
+    }
+  }
+  .page-title{
+    font-size: 2em;
+  }
+  .submenu-open{
+    height: 30em !important;
+    opacity: 1 !important;
+  }
+  .submenu{
+    //@TODO test cross browser - probably not needed
+    //top: 4.4em;
+  }
+  #main{
+    max-width: 95%;
+    margin: 0 auto 120px;
+    padding: 32px 40px;
+  }
+  #home{
+    padding:$logo_pad_tab;
+  }
+  #fq_logo{
+    background: url($logo_img_tab) center no-repeat;
+    height: $logo_ht_tab;
+    width: $logo_wd_tab;
+    max-width: 100%;
+    background-size:100%; //@TODO: not supported in ie7-ie8
+  }
+  .hamburger-wrapper{
+    top: 4.7em;
+  }
+  #footer .menu,
+  #admin-menu,
+  .client-login{
+    display: none;
+  }
+
+  ol li a,
+  ol li label{
+    padding: 3.5em 1.5em 0em 1.5em;
+  }
+  label[for="hamburger_radio"]{
+    background-size: 30%;
+    padding: 3.75em 2em 1em 2em !important;
+  }
+  //footer insights/news
+  .insights,
+  .insights-closed{
+    /*height: auto;
+    padding: 0 20px;*/
+    .views-row{
+      line-height: 1em;
+      padding: 1em 0.5em;
+      margin-bottom: 0.25em;
+    }
+  }
+  //position news at bottom for homepage
+  #footer{
+    position: fixed;
+    bottom: -3px;
+    z-index: 1;
+    .insights{
+    .block_1{
+      $zen-column-count:  7;
+      @include zen-grid-container();
+      #insights{
+      display: block;
+      text-align: center;
+      @include zen-grid-item(1,1);
+      }
+      .views-row-1{
+      @include zen-grid-item(2,2);
+      }
+      .views-row-2{
+      @include zen-grid-item(2,4);
+      }
+      .views-row-3{
+      @include zen-grid-item(2,6);
+      }
+    }
+    .block_2{
+      $zen-column-count:  7;
+      @include zen-grid-container();
+      #insights{
+      display: block;
+      @include zen-grid-item(1,1);
+      }
+      .view-content{
+      .views-row-1{
+        @include zen-grid-item(2,2);
+      }
+      .views-row-2{
+        @include zen-grid-item(2,4);
+      }
+      .views-row-3{
+        @include zen-grid-item(2,6);
+      }
+      }
+      .view-footer{
+      @include zen-grid-item(2,6);
+      }
+    }
+    .block_3{
+      display: none;
+      $zen-column-count:  7;
+      @include zen-grid-container();
+      #insights{
+      display: block;
+      @include zen-grid-item(1,1);
+      }
+      .views-row-1{
+      @include zen-grid-item(2,2);
+      }
+      .views-row-2{
+      @include zen-grid-item(2,4);
+      }
+      .views-row-3{
+      @include zen-grid-item(2,6);
+      }
+    }
+    .block_4{
+      display: none;
+      $zen-column-count:  7;
+      @include zen-grid-container();
+      #insights{
+      display: block;
+      @include zen-grid-item(1,1);
+      }
+      .views-row-1{
+      @include zen-grid-item(2,2);
+      }
+      .views-row-2{
+      @include zen-grid-item(2,4);
+      }
+      .views-row-3{
+      @include zen-grid-item(2,6);
+      }
+        }
+    }
+  }
+.not-logged-in.user-login {
+  .forget-password {
+    right: 0px;
+    width: 240px;
+  }
+}
+
+
+  .view-white-papers-factsheets{
+    @include zen-grid-container;
+    $zen-column-count:  6;
+    .views-row {
+      @include zen-clear();
+    }
+    .views-column.views-column.views-column-1 {
+      @include zen-grid-item(2, 1);
+    }
+    .views-column.views-column.views-column-2 {
+      @include zen-grid-item(2, 3);
+    }
+    .views-column.views-column.views-column-3 {
+      @include zen-grid-item(2, 5);
+    }
+  }
+
+  #navigation{
+    ul{
+      display: block;
+      padding: 0;
+    }
+    .submenu{
+      $zen-column-count:  9;
+      @include zen-grid-container();
+    }
+    .left_half_people{
+      @include zen-grid-item(5,2);
+      color: $dark_gray;
+      width: 40%;
+      ul{
+        padding: 0;
+      }
+      a {
+        color: $light_gray;
+      }
+      .people_submenu_1{
+        padding: 35px 0 0;
+        .views-row-1{
+          margin-bottom: 20px;
+          .views-field-title{
+            font-family: $fnt_light;
+            font-size: 64px;
+            line-height: 100%;
+            a:link, a:visited, a:active{
+              display: block;
+            }
+            a:after{
+              margin-left: 0.1em;
+            }
+            }
+          }
+        }
+      .people_submenu_2{
+        @include zen-clear;
+        .views-row {
+          margin: 0 0 10px;
+        }
+        .views-field-title {
+          font-size: 28px;
+          text-transform: uppercase;
+          margin: 0 0 10px;
+        }
+        .views-field-body {
+          font-size: .9em;
+        }
+      }
+      .people_submenu_3 {
+        a {
+          margin-bottom: 16px;
+          font-size: 18px;
+        }
+        a:after{
+          content: url('../../images/link_arrow_small.png');
+          margin-left: 0.5em;
+        }
+      }
+    }
+    .right_half_people{
+      @include zen-grid-item(4,6);
+      color: $dark_gray;
+      width: 40%;
+      ul{
+        padding: 0;
+      }
+      a {
+        color: $light_gray;
+      }
+      .people_submenu_4{
+        width: 100%;
+        padding-top: 35px;
+        p{
+          margin: 0;
+        }
+        .menu-company-pre {
+          margin: 0 0 20px;
+          a {
+            font-size: 28px;
+            text-transform: uppercase;
+            margin: 0 0 10px;
+          }
+        }
+        .menu-company-list {
+          margin: 0 0 40px;
+          a {
+            font-size: 18px;
+            text-transform: uppercase;
+            margin: 0 0 10px;
+            span {
+              font-size: 10px;
+            }
+          }
+          a:after{
+            content: url('../../images/link_arrow_small.png');
+            margin-left: 0.5em;
+          }
+        }
+        .menu-company-post {
+          a {
+            font-size: 28px;
+            text-transform: uppercase;
+            margin: 0 0 10px;
+          }
+          p a {
+            font-size: 10px;
+            margin: 0;
+            display: inline;
+          }
+          p a:after{
+            content: url('../../images/link_arrow_small.png');
+            margin-left: 0.5em;
+          }
+        }
+      }
+    }
+
+    .left_half_strategy{
+      @include zen-grid-item(5,2);
+      color: $dark_gray;
+      width: 40%;
+      a {
+        color: $light_gray;
+      }
+      .strategy_submenu_1{
+        padding: 35px 0 0;
+        .views-row-1{
+          margin-bottom: 20px;
+          .views-field-title{
+            font-family: $fnt_light;
+            font-size: 64px;
+            text-transform: uppercase;
+            line-height: 100%;
+            a:link, a:visited, a:active{
+              display: block;
+            }
+            a:after{
+              margin-left: 0.1em;
+            }
+            }
+          }
+        }
+      .strategy_submenu_2{
+        @include zen-clear;
+        .title {
+          font-size: 28px;
+        }
+        a:after{
+          //content: url('../../images/link_arrow_small.png');
+          margin-left: 0.5em;
+        }
+        p{
+          margin: 0 0 16px;
+        }
+      }
+    }
+    .right_half_strategy{
+      @include zen-grid-item(4,6);
+      color: $dark_gray;
+      width: 40%;
+      padding: 35px 0 0;
+      p {
+        margin: 0;
+      }
+      a {
+        color: $light_gray;
+      }
+      .menu-strategy-pre {
+        margin: 0 0 10px;
+        a {
+          font-size: 28px;
+        }
+      }
+      .menu-strategy-list {
+        margin: 0 0 10px;
+        a {
+          font-size: 18px;
+          float: left;
+          width: 50%;
+          margin: 0 0 10px;
+          span {
+            font-size: 10px;
+            color: #fff;
+            display: block;
+          }
+          span:after{
+            content: url('../../images/link_arrow_small.png');
+            margin-left: 0.5em;
+          }
+        }
+        br {
+          display: none;
+        }
+      }
+      .menu-strategy-post {
+        clear: both;
+        @include zen-clear;
+        a {
+          font-size: 28px;
+        }
+        p a {
+          display: inline;
+        }
+        p a:after{
+          content: url('../../images/link_arrow_small.png');
+          margin-left: 0.5em;
+        }
+      }
+    }
+  }
+}
+
+
+
+@media all and (min-width: 1060px) {    // DESKTOP ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+  $zen-column-count: 6;
+  //layout changes
+  #content {
+  }
+  .sidebar-second:not(.layout-2-column){
+    #content { /* Span 4 columns, starting in 1st column from left. */
+      @include zen-grid-item(4, 1);
+    }
+
+    .region-sidebar-second { /* Span 1 column, starting in 5th column from left. */
+      @include zen-grid-item(2, 5);
+    }
+  }
+  //2 Columns with sidebar
+  .sidebar-second.layout-2-column{
+    #content{
+      .attachment-before{
+        @include zen-grid-item(4, 1);
+      }
+      .attachment-after{
+        @include zen-grid-item(2, 5);
+      }
+    }
+    .region-sidebar-second{
+
+      @include zen-grid-item(2, 5);
+    }
+  }
+
+
+
+  #main{
+    max-width: 1000px;
+    margin: 0 auto 150px;
+    padding: 32px 40px;
+    //padding-bottom: 10em;
+  }
+  .submenu-open{
+    height: 26em !important;
+    opacity: 1 !important;
+  }
+  .submenu{
+    //@TODO test cross browser - probably not needed
+    //top: 4.4em;
+  }
+  #home{
+    padding: $logo_pad_desk;
+  }
+  #fq_logo{
+    background: url($logo_img_desk) center no-repeat;
+    height: $logo_ht_desk;
+    width: $logo_wd_desk;
+    max-width: 100%;
+    padding:0;
+    background-size:100%; //@TODO: not supported in ie7-ie8
+  }
+  .custom-hamburger-section,
+  .hamburger-submenu{
+    display: none;
+  }
+  //main menu
+  #navigation{
+    ul{
+      display: block;
+      padding: 0;
+    }
+    .submenu{
+      $zen-column-count:  9;
+      @include zen-grid-container();
+    }
+    .left_half_people{
+      @include zen-grid-item(5,2);
+      color: $dark_gray;
+      width: 40%;
+      ul{
+        padding: 0;
+      }
+      a {
+        color: $light_gray;
+      }
+      .people_submenu_1{
+        padding: 35px 0 0;
+        .views-row-1{
+          margin-bottom: 20px;
+          .views-field-title{
+            font-family: $fnt_light;
+            font-size: 64px;
+            line-height: 100%;
+            a:link, a:visited, a:active{
+              display: block;
+            }
+            a:after{
+              margin-left: 0.1em;
+            }
+            }
+          }
+        }
+      .people_submenu_2{
+        @include zen-clear;
+        .views-row {
+          margin: 0 0 10px;
+        }
+        .views-field-title {
+          font-size: 28px;
+          text-transform: uppercase;
+          margin: 0 0 10px;
+        }
+        .views-field-body {
+          font-size: .9em;
+        }
+      }
+      .people_submenu_3 {
+        a {
+          margin-bottom: 16px;
+          font-size: 18px;
+        }
+        a:after{
+          content: url('../../images/link_arrow_small.png');
+          margin-left: 0.5em;
+        }
+      }
+    }
+    .right_half_people{
+      @include zen-grid-item(4,6);
+      color: $dark_gray;
+      width: 40%;
+      ul{
+        padding: 0;
+      }
+      a {
+        color: $light_gray;
+      }
+      .people_submenu_4{
+        width: 100%;
+        padding-top: 35px;
+        p{
+          margin: 0;
+        }
+        .menu-company-pre {
+          margin: 0 0 20px;
+          a {
+            font-size: 28px;
+            text-transform: uppercase;
+            margin: 0 0 10px;
+          }
+        }
+        .menu-company-list {
+          margin: 0 0 40px;
+          a {
+            font-size: 18px;
+            text-transform: uppercase;
+            margin: 0 0 10px;
+            span {
+              font-size: 10px;
+            }
+          }
+          a:after{
+            content: url('../../images/link_arrow_small.png');
+            margin-left: 0.5em;
+          }
+        }
+        .menu-company-post {
+          a {
+            font-size: 28px;
+            text-transform: uppercase;
+            margin: 0 0 10px;
+          }
+          p a {
+            font-size: 10px;
+            margin: 0;
+            display: inline;
+          }
+          p a:after{
+            content: url('../../images/link_arrow_small.png');
+            margin-left: 0.5em;
+          }
+        }
+      }
+    }
+
+    .left_half_strategy{
+      @include zen-grid-item(5,2);
+      color: $dark_gray;
+      width: 40%;
+      a {
+        color: $light_gray;
+      }
+      .strategy_submenu_1{
+        padding: 35px 0 0;
+        .views-row-1{
+          margin-bottom: 20px;
+          .views-field-title{
+            font-family: $fnt_light;
+            font-size: 64px;
+            text-transform: uppercase;
+            line-height: 100%;
+            a:link, a:visited, a:active{
+              display: block;
+            }
+            a:after{
+              margin-left: 0.1em;
+            }
+            }
+          }
+        }
+      .strategy_submenu_2{
+        @include zen-clear;
+        .title {
+          font-size: 28px;
+        }
+        a:after{
+          //content: url('../../images/link_arrow_small.png');
+          margin-left: 0.5em;
+        }
+        p{
+          margin: 0 0 16px;
+        }
+      }
+    }
+    .right_half_strategy{
+      @include zen-grid-item(4,6);
+      color: $dark_gray;
+      width: 40%;
+      padding: 35px 0 0;
+      p {
+        margin: 0;
+      }
+      a {
+        color: $light_gray;
+      }
+      .menu-strategy-pre {
+        margin: 0 0 10px;
+        a {
+          font-size: 28px;
+        }
+      }
+      .menu-strategy-list {
+        margin: 0 0 10px;
+        a {
+          font-size: 18px;
+          float: left;
+          width: 50%;
+          margin: 0 0 10px;
+          span {
+            font-size: 10px;
+            color: #fff;
+            display: block;
+          }
+          span:after{
+            content: url('../../images/link_arrow_small.png');
+            margin-left: 0.5em;
+          }
+        }
+        br {
+          display: none;
+        }
+      }
+      .menu-strategy-post {
+        clear: both;
+        @include zen-clear;
+        a {
+          font-size: 28px;
+        }
+        p a {
+          display: inline;
+        }
+        p a:after{
+          content: url('../../images/link_arrow_small.png');
+          margin-left: 0.5em;
+        }
+      }
+    }
+  }
+  ol li {
+    a,
+    label{
+      //@TODO clean padding: 3.5em 1.5em 0em 1.5em;
+      padding: 52px 30px 0;
+    }
+    #user_login a {
+      padding: 0;
+    }
+  }
+  label[for="hamburger_radio"]{
+    background-size: 30%;
+    padding: 4em 2em 1em 2em !important;
+  }
+  //footer insights/news
+  #footer{
+    position: fixed;
+    bottom: -3px;
+    z-index: 1;
+    #block-menu-menu-footer-and-hamburger-menu{
+      z-index: 3;
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+    }
+    .insights{
+    z-index: 2;
+    background-color: $clr_footer_bg;
+    position: absolute;
+    width: 100%;
+    bottom: 44px;
+    @include transition-property(display);
+    @include transition-duration(0.2s);
+    @include transition-timing-function(ease-out);
+    .views-row{
+      line-height: 1em;
+        padding: 1em 0.5em;
+      margin-bottom: 0.25em;
+        }
+    .block_1{
+      $zen-column-count:  9;
+      @include zen-grid-container();
+      #insights{
+      display: block;
+      text-align: center;
+      @include zen-grid-item(1,2);
+      }
+      .views-row-1{
+      @include zen-grid-item(2,3);
+      }
+      .views-row-2{
+      @include zen-grid-item(2,5);
+      }
+      .views-row-3{
+      @include zen-grid-item(2,7);
+      }
+      .view-footer{
+      @include zen-clear;
+      @include zen-grid-item(2,7);
+      }
+    }
+    .block_2{
+      $zen-column-count:  9;
+      @include zen-grid-container();
+      .views-row-1{
+      @include zen-grid-item(2,3);
+      }
+      .views-row-2{
+      @include zen-grid-item(2,5);
+      }
+      .views-row-3{
+      @include zen-grid-item(2,7);
+      }
+      .view-footer{
+      @include zen-clear;
+      @include zen-grid-item(2,7);
+      }
+    }
+    .block_3{
+      $zen-column-count:  9;
+      @include zen-grid-container();
+      .views-row-1{
+      @include zen-grid-item(2,3);
+      }
+      .views-row-2{
+      @include zen-grid-item(2,5);
+      }
+      .views-row-3{
+      @include zen-grid-item(2,7);
+      }
+    }
+    .block_4{
+      display: none;
+      $zen-column-count:  7;
+      @include zen-grid-container();
+      #insights{
+      display: block;
+      @include zen-grid-item(1,1);
+      }
+      .views-row-1{
+      @include zen-grid-item(2,2);
+      }
+      .views-row-2{
+      @include zen-grid-item(2,4);
+      }
+      .views-row-3{
+      @include zen-grid-item(2,6);
+      }
+        }
+    }
+  }
+
+  /*
+   * The layout when there is only one sidebar, the left one.
+   */
+
+  .sidebar-first {
+    #content { /* Span 4 columns, starting in 2nd column from left. */
+      @include zen-grid-item(4, 2);
+    }
+
+    .region-sidebar-first { /* Span 1 column, starting in 1st column from left. */
+      @include zen-grid-item(1, 1);
+    }
+  }
+
+  .two-sidebars {
+    #content { /* Span 3 columns, starting in 2nd column from left. */
+      @include zen-grid-item(3, 2);
+    }
+
+    .region-sidebar-first { /* Span 1 column, starting in 1st column from left. */
+      @include zen-grid-item(1, 1);
+    }
+
+    .region-sidebar-second { /* Span 1 column, starting in 5th column from left. */
+      @include zen-grid-item(1, 5);
+    }
+  }
+
+.view-white-papers-factsheets{
+  @include zen-grid-container;
+  $zen-column-count:  6;
+    .views-row {
+      @include zen-clear();
+    }
+    .views-column.views-column.views-column-1 {
+      @include zen-grid-item(2, 1);
+    }
+    .views-column.views-column.views-column-2 {
+      @include zen-grid-item(2, 3);
+    }
+    .views-column.views-column.views-column-3 {
+      @include zen-grid-item(2, 5);
+    }
+  }
+
+}
+
+/* fix issue with iphone landscape and nav menu */
+@media only screen
+and (min-device-width: 320px)
+and (max-device-width: 568px) 
+and (orientation: landscape){
+  #navigation .submenu {
+    max-height: 300px !important;
+  }
+}

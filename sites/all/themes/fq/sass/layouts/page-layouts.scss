@@ -1,0 +1,142 @@
+@import "base";
+
+$zen-column-count: 6;
+//$zen-gutter-width:  20px !default;
+#header,
+#content,
+#navigation,
+.region-sidebar-first,
+.region-sidebar-second,
+#footer {
+  @include zen-grid-item-base();
+}
+#header,
+#main,
+#footer {
+  @include zen-grid-container();
+}
+
+/*
+ * PAGE LAYOUTS
+ */
+
+.view-teams{
+  padding: 0 1em;
+  .views-field{
+    padding: 0.5em 0;
+  }
+  .views-field-title{
+    font-size: 2em;
+    font-family: $fnt_bold;
+  }
+  .views-field-field-team-image{
+    img{
+      max-width: 100%;
+      width: 100%;
+    }
+  }
+  .views-row{
+    display: inline;
+  }
+  .views-field-body *,
+  .views-field-body,
+  .views-field-path *,
+  .views-field-path {
+    display: inline;
+  }
+  a:link, a:visited, a:active{
+    text-decoration: none;
+    color: #000;
+    font-family: $fnt_bold;
+  }
+}
+
+.view-display-id-page{
+  //@FIXME 1 -- margin: 0 2em;
+  .page-title-container{
+    //@FIXME 1 -- margin: 0 -2em;
+  }
+}
+.view-partners-listing-page{
+  .field-name-field-partner-image-field{
+    float: left;
+    margin-right: 1em;
+  }
+  .attachment-before{
+    .views-field-title{
+      .field-content{
+        display: block;
+        text-align: center;
+        color: #000;
+        font-size: 2.5em;
+      }
+    }
+  }
+}
+
+.view-team-bios{
+  padding: 0 1em;
+  .attachment-before{
+    .views-field-title{
+      text-align: center;
+      font-size: 2em;
+    }
+  }
+  .attachment-after{
+    .field-name-field-team-member-image{
+      float: left;
+      margin-right: 1em;
+    }
+    .views-field-title{
+      float: left;
+      margin-right: 0.5em;
+    }
+    .field-name-body{
+    }
+    .views-field-edit-node{
+      @include zen-clear;
+    }
+
+    .field-name-body *{
+      display: inline;
+      clear: left;
+    }
+  }
+}
+
+
+/*
+ * Individual Nodes
+ */
+
+//Quarterly video node
+.node-quarterly-video-updates{
+  .field-name-body{
+    float: left;
+  }
+}
+
+/**
+ * styling for newsletters
+ * TZ 6/18/13
+ */
+div.block-mailchimp-lists h2.block-title { display: none; }
+.region-sidebar-second form { border: 2px solid black; padding: 10px; }
+.region-sidebar-second input.form-submit { display: block; margin-left: auto; margin-right: auto;}
+
+/**
+ * styling to help Tim on landing pages
+ * TZ 6/18/13
+ */
+div.attachment.attachment-before div.view-id-strategy:last-child { border-bottom: none; padding-bottom: 0; width: 95%; }
+div.attachment.attachment-before div.view-id-strategy div.views-row { margin-bottom: 25px; }
+div.attachment.attachment-before div.view-id-strategy div.views-field-title { margin-bottom: 10px; }
+div.attachment.attachment-before div.view-id-strategy div.views-field-body { display: inline; }
+div.attachment.attachment-before div.view-id-strategy div.views-field-body * { display: inline; }
+div.attachment.attachment-before div.view-id-strategy div.views-field-body * p { display: inline; }
+div.attachment.attachment-before div.view-id-strategy div.views-field-title-1 { display: inline; }
+div.attachment.attachment-before div.view-id-strategy div.views-field-title-1 * { display: inline; }
+
+div.attachment.attachment-after div.view-display-id-sidebar_1 { background-color: #aaa; padding: 10px; margin-bottom: 10px; }
+div.attachment.attachment-after div.view-display-id-sidebar_2 { background-color: #aaa; padding: 10px; }
+div.attachment.attachment-after div.views-row div.field-content span.file { float: right; }

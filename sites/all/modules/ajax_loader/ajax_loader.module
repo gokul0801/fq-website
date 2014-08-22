@@ -1,0 +1,66 @@
+<?php
+
+/**
+ * Implements hook_menu().
+ */
+function ajax_loader_menu() {
+  $items['ajax-loader'] = array(
+    'page callback' => 'ajax_link_response',
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+  );
+  return $items;
+}
+/**
+ * Callback to generate page content and format for ajax.
+ */
+function ajax_link_response() {
+  $args = func_get_args();
+  $type = array_shift($args);
+  $path = drupal_get_normal_path(implode('/', $args));
+  $url = url($path);
+  if ($type != 'ajax') {
+    drupal_goto($path);
+  }
+
+  // Strip ajax-loader/ajax/ off of $_GET['q'] before generating the page.
+  $current_q = $_GET['q'];
+  $_GET['q'] = $path;
+
+  // Drupal closes one too many output buffers, so we have to open two
+  ob_start();
+  ob_start();
+  $status = menu_execute_active_handler($path);
+  ob_end_clean();
+  $page = ob_get_contents();
+  ob_end_clean();
+  $_GET['q'] = $current_q;
+
+  // Parse out body classes and children of the body tag
+  $doc = new DOMDocument();
+  $doc->loadHTML('<?xml encoding="UTF-8">' . $page);
+  $body = $doc->getElementsByTagName('body')->item(0);
+  $body_class = $body->getAttribute('class');
+  $newdoc = new DOMDocument();
+  foreach ($body->childNodes as $el) {
+    $newdoc->appendChild($newdoc->importNode($el, TRUE));
+  }
+  $body = $newdoc->saveHTML();
+
+  //settings
+  drupal_add_js(array('ajax_loader' => array(
+    'ajax_nav' => TRUE,
+    'path' => $url,
+    'pushed' => TRUE,
+  )), 'setting');
+
+  $commands = array();
+  $commands[] = ajax_command_html('body', $body);
+  $commands[] = ajax_command_invoke('body', 'attr', array('class', $body_class));
+  $page = array(
+    '#type' => 'ajax',
+    '#commands' => $commands,
+  );
+
+  ajax_deliver($page);
+}

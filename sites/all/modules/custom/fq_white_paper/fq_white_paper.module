@@ -1,0 +1,168 @@
+<?php
+/**
+ * @file
+ * Code for the White Paper feature.
+ */
+
+include_once 'fq_white_paper.features.inc';
+
+/**
+ * Implements hook_node_view().
+ */
+function fq_white_paper_node_view($node, $view_mode, $langcode) {
+  $is_allowed = field_permissions_access($node);
+  if ($view_mode == 'full' && !$is_allowed) {
+    if (user_is_anonymous()) {
+      // If an anonymous user tried to access content with permissions set,
+      // direct to register page
+      drupal_goto('user/register', array('query' => array('source' => $_GET['q'])));
+    }
+    else {
+      // If user is already logged in and still doesn't have access, give a 403
+      drupal_access_denied();
+    }
+  }
+  if ($node->type == 'white_paper_factsheet' && $view_mode == 'teaser') {
+    if ($is_allowed) {
+      $node->content['links']['node']['#links']['node-readmore']['title'] = t('Download now');
+    }
+    else {
+      $node->content['links']['node']['#links']['node-readmore']['title'] = t('Register to download');
+      $node->content['links']['node']['#links']['node-readmore']['href'] = 'user/register';
+      $node->content['links']['node']['#links']['node-readmore']['query'] = array('source' => 'node/'. $node->nid);
+
+    }
+  }
+}
+
+/**
+ * Implements hook_user_login().
+ */
+function fq_white_paper_user_login(&$edit, &$account) {
+  if (in_array('unverified user', $account->roles)) {
+    watchdog('user', 'Session closed for %name.', array('%name' => $account->name));
+    module_invoke_all('user_logout', $account);
+    // Destroy the current session, and reset $user to the anonymous user.
+    session_destroy();
+    drupal_set_message(t('Please verify your email address to gain full access to the site.'));
+    drupal_goto('user/login');
+  }
+
+  // Redirect user to requested content on first login.
+  $requests = variable_get('fq_white_paper_requests', array());
+  if (!empty($requests[$account->uid])) {
+    $path = $requests[$account->uid];
+
+    // Test if user has access to destination
+    $has_access = drupal_valid_path($path);
+
+    // Test if user has field_permissions access
+    if (strpos($path, 'node/') == FALSE) {
+      $path = drupal_get_normal_path($path);
+    }
+    list(, $nid) = explode('/', $path);
+    if ($node = node_load($nid)) {
+      $has_access = $has_access && field_permissions_access($node);
+    }
+
+    if ($has_access) {
+      // Either path was not a node, or user has access to node. Send along.
+      unset($requests[$account->uid], $_GET['destination']);
+      variable_set('fq_white_paper_requests', $requests);
+      drupal_goto($path);
+    }
+  }
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function fq_white_paper_form_user_register_form_alter(&$form, &$form_state) {
+  if (!empty($_GET['source']) && (strpos($_GET['source'], '/') !== FALSE)) {
+    // Let user request content so we can send them there on first login.
+    list(, $nid) = explode('/', $_GET['source']);
+    $title = db_select('node')
+      ->fields('node', array('title'))
+      ->condition('nid', $nid)
+      ->condition('type', 'white_paper_factsheet')
+      ->execute()
+      ->fetchField();
+
+    if (!empty($nid) && !empty($title)) {
+      $form['requested_page_display'] = array(
+        '#type' => 'item',
+        '#title' => t('Requested page'),
+        '#markup' => l($title, 'node/'. $nid),
+        '#weight' => -10,
+      );
+      $form['requested_page'] = array(
+        '#type' => 'value',
+        '#value' => !empty($_GET['source']) ? $_GET['source'] : NULL,
+      );
+      $form['#submit'][] = 'fq_white_paper_user_register_submit';
+    }
+  }
+}
+
+function fq_white_paper_user_register_submit(&$form, &$form_state) {
+  // Just save requested content in variable_get for now.
+  $requests = variable_get('fq_white_paper_requests', array());
+  $requests[$form_state['values']['uid']] = $form_state['values']['requested_page'];
+  variable_set('fq_white_paper_requests', $requests);
+}
+
+/**
+ * Implements hook_file_download().
+ */
+function fq_white_paper_file_download($uri) {
+  // Find the node that owns this file
+  $query = db_select('file_managed', 'fm');
+  $query->join('field_data_field_attachment', 'fdfa', "fm.fid = fdfa.field_attachment_fid");
+  $result = $query->fields('fdfa')
+    ->condition('fm.uri', $uri)
+    ->execute()
+    ->fetch();
+
+  // Check field_permissions to see if logged in user has access to node/file
+  if (!empty($result) && $node = node_load($result->entity_id)) {
+    if (!field_permissions_access($node)) {
+      if (user_is_anonymous()) {
+        drupal_goto('user/register', array('query' => array('source' => 'node/'. $node->nid)));
+      }
+      else {
+        return -1;  // deny access
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess().
+ */
+function fq_white_paper_preprocess_views_view_field(&$vars) {
+  if ($vars['view']->name == 'white_papers_factsheets') {
+    $node = node_load($vars['row']->nid);
+    if($vars['field']->field == 'view_node') {
+      if (!field_permissions_access($node)){
+        $vars['output'] = l(t('Register to Download'), 'user/register', array('query' => array('source' => 'node/'. $node->nid)));
+      }
+    } else if ($vars['field']->field == 'field_attachment' && !empty($vars['output'])) {
+      if (user_is_anonymous() && !field_permissions_access($node)){
+        $vars['output'] = l(t('Register to Download'), 'user/register', array('query' => array('source' => 'node/'. $node->nid)));
+      }
+    }
+  }
+}
+
+/**
+ * Helper function returns TRUE if current logged in user has access to node.
+ */
+function field_permissions_access($node) {
+  if (!empty($node->field_permissions)) {
+    $role = $node->field_permissions[$node->language][0]['value'];
+    $anon_access = ($role == 'anonymous user');
+    return $anon_access || user_is_logged_in();
+  }
+  return TRUE;
+}
+

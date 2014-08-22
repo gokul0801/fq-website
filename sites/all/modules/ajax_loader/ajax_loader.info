@@ -1,0 +1,6 @@
+name = Ajax loader
+package = FQ
+description = Loads content with Drupal ajax.
+core = 7.x
+
+scripts[] = js/ajax_loader.js

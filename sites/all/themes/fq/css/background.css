@@ -1,0 +1,289 @@
+/* Put all our custom theme variables in this file
+   All theme variables can be overridden here that have the property:  !default
+
+*/
+/***********************************************************************
+  LAYOUT VARIABLES
+***********************************************************************/
+/* --------------------------------------------------------------desktop
+*/
+/* ---------------------------------------------------------------tablet
+*/
+/* -----------------------------------------------------------------cell
+*/
+/***********************************************************************
+  PRESENTATION VARIABLES
+***********************************************************************/
+/* --------------------------------------------------------------desktop
+*/
+/* ---------------------------------------------------------------tablet
+*/
+/* -----------------------------------------------------------------cell
+*/
+/***********************************************************************
+  FONTS
+***********************************************************************/
+/***********************************************************************
+  COLORS
+
+  Organize by section
+    e.g, page, navigation, sidebar, footer, form, etc
+  Variables should typically have both a default fg and bg
+***********************************************************************/
+.front #main {
+  max-width: 100%;
+  padding: 0;
+}
+
+/*
+  Homepage slideshow
+ */
+#prev,
+#next {
+  background: url(/sites/all/themes/fq/images/slideshow_arrow.png) no-repeat;
+  position: absolute;
+  height: 128px;
+  width: 79px;
+  position: absolute;
+  top: 27em;
+  z-index: 1;
+}
+#prev:hover,
+#next:hover {
+  cursor: pointer;
+}
+
+#prev {
+  left: 1%;
+  -moz-transform: scaleX(-1);
+  -o-transform: scaleX(-1);
+  -webkit-transform: scaleX(-1);
+  transform: scaleX(-1);
+  filter: FlipH;
+  -ms-filter: "FlipH";
+}
+
+#next {
+  right: 1%;
+}
+
+#page {
+  position: relative;
+  z-index: 1;
+}
+#page #main, #page #content {
+  width: 100%;
+  position: static;
+}
+
+.contextual-links-wrapper {
+  position: relative;
+  top: 10%;
+  right: 10%;
+}
+
+.view-homepage .orange {
+  color: #ff5a00;
+}
+.view-homepage .slideshow-wrapper {
+  width: 100%;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+  position: relative;
+}
+.view-homepage .view-content {
+  width: 300%;
+  overflow: hidden;
+  position: relative;
+  top: 0;
+  left: 0;
+  -webkit-transition-property: left;
+  -moz-transition-property: left;
+  -o-transition-property: left;
+  transition-property: left;
+  -webkit-transition-duration: 0.5s;
+  -moz-transition-duration: 0.5s;
+  -o-transition-duration: 0.5s;
+  transition-duration: 0.5s;
+  -webkit-transition-timing-function: ease-out;
+  -moz-transition-timing-function: ease-out;
+  -o-transition-timing-function: ease-out;
+  transition-timing-function: ease-out;
+}
+.view-homepage .views-row {
+  width: 33.3333%;
+  float: left;
+  position: relative;
+  overflow: hidden;
+}
+.view-homepage .views-row img {
+  display: block;
+}
+.view-homepage .views-row .views-field-field-background-slider-image img {
+  margin: 0 auto;
+  width: 100%;
+}
+.view-homepage .views-row .views-field-title {
+  position: absolute;
+  left: 16%;
+  top: 135px;
+  max-width: 640px;
+}
+.view-homepage .views-row .views-field-title .field-title {
+  font-size: 64px;
+  color: #dfdfdf;
+  font-family: DINWeb-Light;
+  text-transform: uppercase;
+  line-height: 1;
+  margin: 0 0 20px;
+}
+.view-homepage .views-row .views-field-title a:link, .view-homepage .views-row .views-field-title a:visited, .view-homepage .views-row .views-field-title a:active {
+  border: 3px solid rgba(255, 255, 255, 0.5);
+  font-family: DINWeb-Bold;
+  color: #fff;
+  text-decoration: none;
+  display: inline-block;
+  padding: 1em 2em;
+  font-size: 22px;
+}
+.view-homepage .views-row .views-field-title .views-row {
+  width: 33.3333%;
+  float: left;
+  position: relative;
+  overflow: hidden;
+  height: 1040px;
+}
+.view-homepage .views-row .views-field-title .views-row .views-field-field-background-slider-image .field-content {
+  height: 200%;
+  width: 200%;
+  left: -50%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.view-homepage .views-row .views-field-title .views-row .views-field-field-background-slider-image img {
+  margin-top: -160px;
+}
+.view-homepage .views-row .views-field-title .views-row .views-field-title {
+  position: absolute;
+  top: 135px;
+  max-width: 820px;
+}
+.view-homepage .views-row .views-field-title .views-row .views-field-title .field-title {
+  font-size: 72px;
+  color: #dfdfdf;
+  font-family: DINWeb-Light;
+  text-transform: uppercase;
+  line-height: 90%;
+  margin: 0 0 20px;
+}
+.view-homepage .views-row .views-field-title .views-row .views-field-title a:link, .view-homepage .views-row .views-field-title .views-row .views-field-title a:visited, .view-homepage .views-row .views-field-title .views-row .views-field-title a:active {
+  border: 3px solid rgba(255, 255, 255, 0.5);
+  font-family: DINWeb-Bold;
+  color: #fff;
+  text-decoration: none;
+  display: inline-block;
+  padding: 20px;
+  font-size: 22px;
+}
+
+@media all and (min-width: 0px) and (max-width: 770px) {
+  .view-homepage .views-row .views-field-title {
+    top: 30px;
+    max-width: 56%;
+  }
+  .view-homepage .views-row .views-field-title .field-title {
+    font-size: 32px;
+  }
+  .view-homepage .views-row .views-field-title a:link, .view-homepage .views-row .views-field-title a:visited, .view-homepage .views-row .views-field-title a:active {
+    font-size: 12px;
+    padding: 5px 10px;
+  }
+
+  #prev,
+  #next {
+    top: 100px;
+    background-size: 100%;
+    width: 35px;
+  }
+}
+@media all and (min-width: 0px) and (max-width: 480px) {
+  .view-homepage .views-row .views-field-title .field-title {
+    font-size: 23px;
+  }
+}
+@media all and (min-width: 480px) and (max-width: 640px) {
+  .view-homepage .views-row .views-field-title .field-title {
+    font-size: 32px;
+  }
+}
+@media all and (min-width: 640px) and (max-width: 1059px) {
+  .view-homepage .views-row .views-field-title {
+    top: 85px;
+    max-width: 56%;
+  }
+  .view-homepage .views-row .views-field-title .field-title {
+    font-size: 56px;
+  }
+  .view-homepage .views-row .views-field-title a:link, .view-homepage .views-row .views-field-title a:visited, .view-homepage .views-row .views-field-title a:active {
+    font-size: 16px;
+  }
+
+  #prev,
+  #next {
+    top: 17em;
+  }
+}
+@media all and (min-width: 640px) and (max-width: 770px) {
+  .view-homepage .views-row .views-field-title .field-title {
+    font-size: 42px;
+  }
+}
+#progress-indicator {
+  position: fixed;
+  top: 50%;
+  left: 45%;
+  z-index: 999;
+  background: transparent url("../images/Progress.gif") no-repeat;
+  height: 64px;
+  width: 64px;
+}
+
+.terminus {
+  display: none;
+}
+
+.field-name-field-basic-page-image {
+  display: none;
+}
+
+.background-image {
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: -1;
+}
+.background-image img {
+  width: 100%;
+  height: auto;
+}
+
+.transition {
+  -webkit-transition: opacity 0.2s ease-in-out;
+  -moz-transition: opacity 0.2s ease-in-out;
+  -o-transition: opacity 0.2s ease-in-out;
+  transition: opacity 0.2s ease-in-out;
+}
+
+.fade {
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
+  opacity: 1;
+}
+
+.hidder {
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);
+  opacity: 0;
+}

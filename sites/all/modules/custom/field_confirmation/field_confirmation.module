@@ -1,0 +1,96 @@
+<?php
+
+/**
+ * Implements hook_form_alter().
+ *
+ * Add "Confirm on Submit" options to the content type field settings form.
+ */
+function field_confirmation_form_field_ui_field_edit_form_alter(&$form, $form_state) {
+  $widget_type = $form['#instance']['widget']['type'];
+  if (in_array($widget_type, field_confirmation_supported_widgets())) {
+    $settings = !empty($form['#instance']['settings']['field_confirmation'])
+      ? $form['#instance']['settings']['field_confirmation']
+      : field_confirmation_default();
+    $form['instance']['settings']['field_confirmation'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('Confirm on submit'),
+      '#tree' => TRUE,
+      '#collapsible' => TRUE,
+      '#collapsed' => !$settings['enabled'],
+    );
+    $form['instance']['settings']['field_confirmation']['enabled'] = array(
+      '#type' => 'checkbox',
+      '#title' => t('Show confirmation dialog when submitting this field'),
+      '#default_value' => $settings['enabled'],
+    );
+    $form['instance']['settings']['field_confirmation']['message'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Message'),
+      '#description' => t('Field values will appear below this message.'),
+      '#default_value' => $settings['message'],
+    );
+    $form['instance']['settings']['field_confirmation']['empty_message'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Empty message'),
+      '#description' => t('Message to display on empty input.'),
+      '#default_value' => $settings['empty_message'],
+    );
+  }
+}
+
+/**
+ * Implements hook_form_alter().
+ *
+ * Gather settings while a node's field widgets are being built.
+ */
+function field_confirmation_field_widget_form_alter(&$element, $form_state, $context) {
+  $settings = !empty($context['instance']['settings']['field_confirmation'])
+    ? $context['instance']['settings']['field_confirmation']
+    : field_confirmation_default();
+  if ($settings['enabled']) {
+    $element['#attributes']['class'][] = 'bundle-'. $element['#bundle'];
+    $element['#attributes']['class'][] = 'field-'. $element['#field_name'];
+    $settings['selector'] = '.bundle-'. $element['#bundle'] .'.field-'. $element['#field_name'];
+    $settings['required'] = $element['#required'];
+    $collected_settings =& drupal_static('field_confirmation_collected_settings', array());
+    $collected_settings[] = $settings;
+  }
+}
+
+/**
+ * Implements hook_form_alter().
+ *
+ * Add the aggregate settings to a node form as JS, to be handled on the front
+ * end.
+ */
+function field_confirmation_form_node_form_alter(&$form, $form_state) {
+  $collected_settings =& drupal_static('field_confirmation_collected_settings', array());
+  if (!empty($collected_settings)) {
+    $form['#attached']['js'][] = drupal_get_path('module', 'field_confirmation') .'/field_confirmation.js';
+    $form['#attached']['js'][] = array(
+      'data' => array(
+        'field_confirmation' => $collected_settings,
+      ),
+      'type' => 'setting',
+    );
+  }
+}
+
+/**
+ * Get a simple default state of settings.
+ */
+function field_confirmation_default() {
+  return array(
+    'enabled' => FALSE,
+    'required' => FALSE,
+    'message' => 'Confirm the values below before submitting.',
+    'empty_message' => 'Please select a value before submitting.',
+  );
+}
+
+/**
+ * Get the list of supported form widgets.
+ */
+function field_confirmation_supported_widgets() {
+  return array('options_select');
+}

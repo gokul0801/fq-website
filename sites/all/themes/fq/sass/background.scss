@@ -1,0 +1,267 @@
+@import "base";
+
+.front #main {
+  max-width: 100%;
+  padding: 0;
+}
+
+/*
+  Homepage slideshow
+ */
+//arrows
+#prev,
+#next {
+  background: url(/sites/all/themes/fq/images/slideshow_arrow.png) no-repeat;
+  position: absolute;
+  height: 128px;
+  width: 79px;
+  position: absolute;
+  top: 27em;
+  z-index: 1;
+  &:hover{
+    cursor: pointer;
+  }
+}
+#prev{
+  left: 1%;
+  @include image-horiz-flip;
+}
+#next{
+  right: 1%;
+}
+
+#page{
+  position: relative;
+  z-index: 1;
+  #main, #content {
+    width: 100%;
+    position: static;
+  }
+}
+.contextual-links-wrapper{
+  position: relative;
+  top:10%;
+  right: 10%;
+}
+.view-homepage{
+  .orange {
+    color: $clr_footer_title;
+  }
+  .slideshow-wrapper{
+    width: 100%;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+    position: relative;
+  }
+  .view-content{
+    width: 300%;
+    overflow: hidden;
+    position: relative;
+    top: 0;
+    left: 0;
+    @include transition-property(left);
+    @include transition-duration(0.5s);
+    @include transition-timing-function(ease-out);
+  }
+  .views-row {
+    img { display: block; }
+    width: 33.3333%;
+    float: left;
+    position: relative;
+    overflow: hidden;
+    .views-field-field-background-slider-image img {
+      margin: 0 auto;
+      width: 100%;
+    }
+    .views-field-title {
+      position: absolute;
+      left: 16%;
+      top: 135px;
+      max-width: 640px;
+      .field-title {
+        font-size: 64px;
+        color: $clr_slideshow_1_title;
+        font-family: $fnt_light;
+        text-transform: uppercase;
+        line-height: 1;
+        margin: 0 0 20px;
+      }
+      a:link, a:visited, a:active {
+        border: 3px solid rgba(255,255,255,0.5);
+        font-family: $fnt_bold;
+        color: #fff;
+        text-decoration: none;
+        display: inline-block;
+        padding: 1em 2em;
+        font-size: 22px;
+      }
+      .views-row{
+        width: 33.3333%;
+        float: left;
+        position: relative;
+        overflow: hidden;
+        height: 1040px;
+        .views-field-field-background-slider-image{
+          .field-content {
+            height: 200%;
+            width: 200%;
+            left: -50%;
+            position: absolute;
+            top: 0;
+            left: 0;
+          }
+          img{
+            margin-top: -160px;
+          }
+        }
+        .views-field-title {
+          position: absolute;
+          top: 135px;
+          max-width: 820px;
+          .field-title {
+            font-size: 72px;
+            color: $clr_slideshow_1_title;
+            font-family: $fnt_light;
+            text-transform: uppercase;
+            line-height: 90%;
+            margin: 0 0 20px;
+          }
+          a:link, a:visited, a:active{
+            border: 3px solid rgba(255,255,255,0.5);
+            font-family: $fnt_bold;
+            color: #fff;
+            text-decoration: none;
+            display: inline-block;
+            padding: 20px;
+            font-size: 22px;
+          }
+        }
+      }
+    }
+  }
+}
+
+
+@media all and (min-width: 0px) and (max-width: 770px) {  //MOBILE |||||||||||||||||||||||||||||||||||||||||||||||||||||||
+  .view-homepage{
+    .views-row{
+      .views-field-title {
+        top: 30px;
+        max-width: 56%;
+        .field-title {
+          font-size: 32px;
+        }
+        a:link, a:visited, a:active{
+          font-size: 12px;
+          padding: 5px 10px;
+        }
+      }
+    }
+  }
+  #prev,
+  #next {
+    top: 100px;
+    background-size: 100%;
+    width: 35px;
+  }
+}
+@media all and (min-width: 0px) and (max-width: 480px) {  //MOBILE - Portrait |||||||||||||||||||||||||||||||||||||||||||||||||||||||
+  .view-homepage{
+    .views-row{
+      .views-field-title {
+        .field-title {
+          font-size: 23px;
+        }
+      }
+    }
+  }
+}
+@media all and (min-width: 480px) and (max-width: 640px) {  //MOBILE - Landscape |||||||||||||||||||||||||||||||||||||||||||||||||||||||
+  .view-homepage{
+    .views-row{
+      .views-field-title {
+        .field-title {
+          font-size: 32px;
+        }
+      }
+    }
+  }
+}
+
+@media all and (min-width: 640px) and (max-width: 1059px) {  //TABLET|||||||||||||||||||||||||||||||||||||||||||||||||||
+  .view-homepage{
+    .views-row{
+      .views-field-title {
+        top: 85px;
+        max-width: 56%;
+        .field-title {
+          font-size: 56px;
+        }
+        a:link, a:visited, a:active{
+          font-size: 16px;
+        }
+      }
+    }
+  }
+  #prev,
+  #next {
+    top: 17em;
+  }
+}
+@media all and (min-width: 640px) and (max-width: 770px) {  //Tablet - Portrait |||||||||||||||||||||||||||||||||||||||||||||||||||||||
+  .view-homepage{
+    .views-row{
+      .views-field-title {
+        .field-title {
+          font-size: 42px;
+        }
+      }
+    }
+  }
+}
+
+
+//homepage slide loader progress
+#progress-indicator{
+  position: fixed;
+  top: 50%;
+  left: 45%;
+  z-index: 999;
+  background: transparent url('../images/Progress.gif') no-repeat;
+  height: 64px;
+  width: 64px;
+}
+
+.terminus{
+  display: none;
+}
+
+
+
+//hide basic page images (for insert module)
+.field-name-field-basic-page-image{
+  display: none;
+}
+.background-image{
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: -1;
+
+  img{
+    width: 100%;
+    height: auto;
+  }
+}
+.transition{
+  @include transition(opacity 0.2s ease-in-out);
+}
+.fade{
+  @include opacity(1);
+}
+.hidder{
+  @include opacity(0);
+}

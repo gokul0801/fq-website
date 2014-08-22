@@ -1,0 +1,5 @@
+name = Filefield Rename
+description = Allows users to specify the filenames for uploaded files
+core = 7.x
+package = Fields
+php = 5.2.4

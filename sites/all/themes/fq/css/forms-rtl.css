@@ -1,0 +1,67 @@
+/**
+ * @file
+ * RTL companion for the forms.css file.
+ */
+/* Put all our custom theme variables in this file
+   All theme variables can be overridden here that have the property:  !default
+
+*/
+/***********************************************************************
+  LAYOUT VARIABLES
+***********************************************************************/
+/* --------------------------------------------------------------desktop
+*/
+/* ---------------------------------------------------------------tablet
+*/
+/* -----------------------------------------------------------------cell
+*/
+/***********************************************************************
+  PRESENTATION VARIABLES
+***********************************************************************/
+/* --------------------------------------------------------------desktop
+*/
+/* ---------------------------------------------------------------tablet
+*/
+/* -----------------------------------------------------------------cell
+*/
+/***********************************************************************
+  FONTS
+***********************************************************************/
+/***********************************************************************
+  COLORS
+
+  Organize by section
+    e.g, page, navigation, sidebar, footer, form, etc
+  Variables should typically have both a default fg and bg
+***********************************************************************/
+/*
+ * Drupal's default login form block
+ */
+#user-login-form {
+  text-align: right;
+  /*
+   * OpenID
+   *
+   * The default styling for the OpenID login link seems to assume Garland's
+   * styling of list items.
+   */
+}
+html.js #user-login-form li.openid-link,
+#user-login-form li.openid-link {
+  /* The "Log in using OpenID" link. */
+  margin-left: 0;
+  margin-right: -20px;
+  /* Un-do some of the padding on the ul list. */
+}
+
+/*
+ * Drupal admin tables
+ *
+ * We overrode these styles in html-elements.css, but restore them for the admin
+ * section of the site.
+ */
+form th {
+  text-align: right;
+  padding-left: 1em;
+  padding-right: 0;
+}

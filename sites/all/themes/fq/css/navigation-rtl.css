@@ -1,0 +1,55 @@
+/**
+ * @file
+ * RTL companion for the navigation.css file.
+ */
+/* Put all our custom theme variables in this file
+   All theme variables can be overridden here that have the property:  !default
+
+*/
+/***********************************************************************
+  LAYOUT VARIABLES
+***********************************************************************/
+/* --------------------------------------------------------------desktop
+*/
+/* ---------------------------------------------------------------tablet
+*/
+/* -----------------------------------------------------------------cell
+*/
+/***********************************************************************
+  PRESENTATION VARIABLES
+***********************************************************************/
+/* --------------------------------------------------------------desktop
+*/
+/* ---------------------------------------------------------------tablet
+*/
+/* -----------------------------------------------------------------cell
+*/
+/***********************************************************************
+  FONTS
+***********************************************************************/
+/***********************************************************************
+  COLORS
+
+  Organize by section
+    e.g, page, navigation, sidebar, footer, form, etc
+  Variables should typically have both a default fg and bg
+***********************************************************************/
+ul li.collapsed {
+  list-style-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAHAQMAAAD+nMWQAAAABlBMVEX///8AAABVwtN+AAAAAXRSTlMAQObYZgAAABNJREFUCB1j4GASYFJgcmD+A4IADUIDfIUMT4wAAAAASUVORK5CYII=');
+}
+
+#navigation ul.links,
+#navigation ul.menu {
+  /* Menu block links */
+  text-align: right;
+}
+#navigation ul.links li,
+#navigation ul.menu li {
+  /* A simple method to get navigation links to appear in one line. */
+  float: right;
+  padding: 0 0 0 10px;
+}
+
+#secondary-menu {
+  float: left;
+}

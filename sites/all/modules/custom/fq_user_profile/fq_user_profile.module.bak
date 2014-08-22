@@ -1,0 +1,31 @@
+<?php
+/**
+ * @file
+ * Code for the User Profile feature.
+ */
+
+include_once 'fq_user_profile.features.inc';
+
+/**
+ * Implements hook_menu().
+ */
+function fq_user_profile_menu() {
+  $items['user/dashboard'] = array(
+    'title' => 'Your Home',
+    'page callback' => 'menu_tree',
+    'page arguments' => array('menu-dashboard'),
+    'access callback' => 'user_is_logged_in',
+  );
+  return $items;
+}
+
+/**
+ * Implements hook_user_login().
+ */
+function fq_user_profile_user_login(&$edit, &$account) {
+  if (arg(0) == 'user' && arg(1) == 'reset' && $account->access != 0) {
+    // Don't hijack password resets, unless this is first login
+    return;
+  }
+  $_GET['destination'] = 'user/dashboard';
+}

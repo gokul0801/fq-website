@@ -1,0 +1,12 @@
+name = Emma Block
+description = Integration with MyEmma mailing lists via API
+package = Other
+core = 7.x
+
+configure = admin/config/emma_block/settings
+; Information added by drupal.org packaging script on 2013-05-25
+version = "7.x-2.5"
+core = "7.x"
+project = "emma_block"
+datestamp = "1369467362"
+

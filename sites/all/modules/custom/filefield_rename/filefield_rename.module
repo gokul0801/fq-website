@@ -1,0 +1,135 @@
+<?php
+
+function filefield_rename_form_alter(&$form, &$form_state, $form_id) {
+  if(strstr($form_id, 'node_form')) {
+    $fields = filefield_rename_get_form_filefields($form['type']['#value']);
+    $lang = $form['language']['#value'];
+    foreach ($fields as $field_name => $field_info) {
+      foreach($form[$field_name][$lang] as $delta => &$item) {
+        if(is_numeric($delta)) {
+          if (isset($form_state['node']->{$field_name}[$lang][$delta])) {
+            $file_data = $form_state['node']->{$field_name}[$lang][$delta];
+          } else if(isset($form_state['values'][$field_name][$lang][$delta])) {
+            $file_data = $form_state['values'][$field_name][$lang][$delta];
+          }  else {
+            $file_data = array();
+          }
+          if (!empty($file_data)) {
+            $filename_parts = filefield_rename_filename_extension_split($file_data['filename']);
+
+            $form[$field_name][$lang][$delta]['rename'] = array(
+              '#type' => 'container',
+              '#attributes' => array('class' => array('rename-control')),
+            );
+          
+            $form[$field_name][$lang][$delta]['rename']['value'] = array(
+              '#type' => 'textfield',
+              '#title' => t('Rename'),
+              '#default_value' => $filename_parts['basename'],
+              '#suffix' => '.' . $filename_parts['extension'],
+            );
+          }
+        }
+      }
+      $form['#submit'][] = 'filefield_rename_submit';
+      drupal_add_css(drupal_get_path('module', 'filefield_rename') . '/css/rename_control.css');
+    }
+  }
+}
+
+function filefield_rename_get_form_filefields($bundle_name) {
+  $entity_type = 'node';
+  $fields_info = field_info_instances($entity_type, $bundle_name);
+  $fields = array();
+  foreach ($fields_info as $field_name => $value) {
+    $field_info = field_info_field($field_name);
+    $type = $field_info['type'];
+    if($type == 'file') {
+      $fields[$field_name] = $field_info;
+    }
+  }
+  return $fields;
+}
+
+function filefield_rename_submit($form, &$form_state) {
+  foreach ($form_state['values']['field_attachment'] as &$language) {
+    foreach ($language as &$item) {
+      if (isset($item['rename']['value']) && $value = $item['rename']['value']) {
+        $file = file_load($item['fid']);
+        $old_filename_parts = filefield_rename_filename_extension_split($file->filename);
+        if ($value != $old_filename_parts['basename']) {
+          filefield_rename_rename_file($item['fid'], $value);
+        }
+      }
+    }
+  }
+}
+
+function filefield_rename_rename_file($fid, $rename) {
+  //load file data
+  $file = file_load($fid);
+  $filename_parts = filefield_rename_filename_extension_split($file->filename);
+  if (!empty($rename) && isset($filename_parts['extension'])) {
+    $new_uri = filefield_rename_filename_process($rename . '.' . $filename_parts['extension'], $file->uri);
+
+    //rename file
+    file_move($file, $new_uri);
+
+    //update file object
+    $file->filename = basename($new_uri);
+    $file->uri = $new_uri;
+
+    //save metadata
+    file_save($file);
+  }
+}
+
+function filefield_rename_filename_extension_split($filename) {
+  $parts = explode('.', $filename);
+  $size = count($parts);
+  $file_parts['basename'] = $parts[0];
+  $file_parts['extension'] = $parts[$size - 1];
+  
+  return $file_parts;
+}
+
+function filefield_rename_filename_process($filename, $original_uri) {
+  $uri = filefield_rename_generate_tokenized_uri($filename, $original_uri);
+  if (filefield_rename_filename_check_available($filename, $uri)) {
+    return $uri;
+  } else {
+    static $salt = 0;
+    $filename_parts = filefield_rename_filename_extension_split($filename);
+    $filename_salt = "{$filename_parts['basename']}_{$salt}.{$filename_parts['extension']}";
+    while(!filefield_rename_filename_check_available($filename_salt, $uri)) {
+      $salt++;
+      $filename_salt = "{$filename_parts['basename']}_{$salt}.{$filename_parts['extension']}";
+      $uri = filefield_rename_generate_tokenized_uri($filename_salt, $original_uri);
+      if ($salt > 100) {
+        //can't find a name? break out of this and return an error
+        return 0;
+      }
+    }
+    return $uri;
+  }
+}
+
+function filefield_rename_filename_check_available($filename, $uri) {
+  $result = db_select('file_managed', 'fm')
+    ->fields('fm')
+    ->condition(db_or()
+      ->condition('filename', $filename, '=')
+      ->condition('uri', $uri, '='))
+    ->execute()
+    ->fetch();
+  
+  if ($result) {
+    return FALSE;
+  } else {
+    return TRUE;
+  }
+}
+
+function filefield_rename_generate_tokenized_uri($filename, $original_uri) {
+  return str_replace(basename($original_uri), $filename, $original_uri);
+}

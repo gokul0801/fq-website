@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the Page Backgrounds feature.
+ */
+
+include_once 'fq_page_backgrounds.features.inc';

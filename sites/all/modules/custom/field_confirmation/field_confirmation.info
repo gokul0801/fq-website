@@ -1,0 +1,4 @@
+name = Field Confirmation
+description = Add a confirmation box on node submit for content editors to double check sensitive form data
+core = 7.x
+package = FQ

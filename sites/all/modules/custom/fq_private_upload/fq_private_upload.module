@@ -1,0 +1,174 @@
+<?php
+/**
+ * @file
+ * Code for the Private Uploads feature.
+ */
+
+include_once 'fq_private_upload.features.inc';
+
+/**
+ * Implements hook_views_pre_render().
+ */
+function fq_private_upload_views_pre_render(&$view) {
+  global $user;
+  $user = user_load($user->uid);
+  if ($view->name == 'private_uploads') {
+    if (!empty($view->header) && !empty($view->header['area'])) {
+      $name = (!empty($user->field_name) ? $user->field_name[LANGUAGE_NONE][0]['value'] : 'Valued consumer');
+      $view->header['area']->options['content'] = str_replace('[field_name]', $name, $view->header['area']->options['content']);
+    }
+  }
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function fq_private_upload_form_views_exposed_form_alter(&$form, &$form_state) {
+  $view = $form_state['view'];
+  if ($view->name == 'private_uploads') {
+    $options = $form['category']['#options'];
+    $new_options = array();
+    $new_options['All'] = $options['All'];
+
+    $result = views_get_view_result('private_uploads', 'category_list');
+    foreach ($result as $row) {
+      $tid = $row->field_data_field_pu_category_field_pu_category_tid;
+      if (!empty($options[$tid])) {
+        $new_options[$tid] = $options[$tid];
+      }
+    }
+
+    natcasesort($new_options);
+    $form['category']['#options'] = $new_options;
+
+    // Switch date formatter to month only
+    $form['month']['value']['#date_format'] = 'm';
+    $form['month']['value']['#title'] = '&nbsp;';
+    // Add extra validator to handle filter submit
+    $form['#validate'][] = 'fq_private_upload_views_exposed_form_validate';
+  }
+}
+
+/**
+ * Custom validator for exposed date filter
+ */
+function fq_private_upload_views_exposed_form_validate(&$form, &$form_state) {
+  $handlers = &$form_state['view']->filter;
+  foreach ($handlers as $key => $handler) {
+    if (!empty($handler->options['exposed'])) {
+      $identifier = $handler->options['expose']['identifier'];
+      if (isset($form[$identifier]['value']['#type'])
+          && $form[$identifier]['value']['#type'] == 'date_select'
+          && $form[$identifier]['value']['#date_format'] == 'm') {
+        $handler->options['granularity'] = 'month';
+        $handler->format = 'm';
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_node_access().
+ */
+function fq_private_upload_node_access($node, $op, $account) {
+  $type = is_string($node) ? $node : $node->type;
+  if ($type != 'private_upload') return NODE_ACCESS_IGNORE;
+  if (is_object($node) && $op == 'view' && user_access('access content', $account)) {
+
+    // If user or group is referenced by node, allow access
+    $user_access = _reference_field_values($node->field_user_access);
+    if (in_array($account->uid, $user_access)) {
+      return NODE_ACCESS_ALLOW;
+    }
+    $group_access = _reference_field_values($node->field_group_access);
+    foreach ($group_access as $item) {
+      if (og_is_member('node', $item)) {
+        return NODE_ACCESS_ALLOW;
+      }
+    }
+  }
+
+  return NODE_ACCESS_DENY;
+}
+
+/**
+ * Implements hook_node_grants().
+ */
+function fq_private_upload_node_grants($account, $op) {
+  // Compare current user and user's groups to the node access table
+  $grants['fq_user'] = array($account->uid);
+  $groups = og_get_groups_by_user($account);
+  if (!empty($groups['node'])) {
+    $grants['fq_group'] = array();
+    foreach ($groups['node'] as $nid) {
+      $grants['fq_group'][] = $nid;
+    }
+  }
+  return $grants;
+}
+
+/**
+ * Implements hook_node_access_records().
+ */
+function fq_private_upload_node_access_records($node) {
+  $grants = array();
+  if ($node->type == 'private_upload') {
+    // Apply a default pass record to force private uploads to use node access
+    $grants[] = array(
+      'realm' => 'fq_user',
+      'gid' => 0,
+      'grant_view' => 0,
+      'grant_update' => 0,
+      'grant_delete' => 0,
+      'priority' => 0,
+    );
+    $grants[] = array(
+      'realm' => 'fq_group',
+      'gid' => 0,
+      'grant_view' => 0,
+      'grant_update' => 0,
+      'grant_delete' => 0,
+      'priority' => 0,
+    );
+
+    // Grant access to each user and group referenced
+    $user_access = _reference_field_values($node->field_user_access);
+    foreach ($user_access as $item) {
+      $grants[] = array(
+        'realm' => 'fq_user',
+        'gid' => $item,
+        'grant_view' => 1,
+        'grant_update' => 0,
+        'grant_delete' => 0,
+        'priority' => 0,
+      );
+    }
+    $group_access = _reference_field_values($node->field_group_access);
+    foreach ($group_access as $item) {
+      $grants[] = array(
+        'realm' => 'fq_group',
+        'gid' => $item,
+        'grant_view' => 1,
+        'grant_update' => 0,
+        'grant_delete' => 0,
+        'priority' => 0,
+      );
+    }
+  }
+  return $grants;
+}
+
+function _reference_field_values($array, $ret = array()) {
+  // These reference fields are a mess. Sometimes they're array('und' => array()),
+  // sometimes they're array(0 => 'value'), sometimes array('und' => array(0 => 'value')).
+  // Just find the end values and return them.
+  foreach ($array as $item) {
+    if (is_array($item)) {
+      $ret = array_merge($ret, _reference_field_values($item));
+    }
+    elseif (!empty($item)) {
+      $ret[] = $item;
+    }
+  }
+  return $ret;
+}

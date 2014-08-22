@@ -1,0 +1,58 @@
+/**
+ * @file
+ * RTL companion for the pages.css file.
+ */
+/* Put all our custom theme variables in this file
+   All theme variables can be overridden here that have the property:  !default
+
+*/
+/***********************************************************************
+  LAYOUT VARIABLES
+***********************************************************************/
+/* --------------------------------------------------------------desktop
+*/
+/* ---------------------------------------------------------------tablet
+*/
+/* -----------------------------------------------------------------cell
+*/
+/***********************************************************************
+  PRESENTATION VARIABLES
+***********************************************************************/
+/* --------------------------------------------------------------desktop
+*/
+/* ---------------------------------------------------------------tablet
+*/
+/* -----------------------------------------------------------------cell
+*/
+/***********************************************************************
+  FONTS
+***********************************************************************/
+/***********************************************************************
+  COLORS
+
+  Organize by section
+    e.g, page, navigation, sidebar, footer, form, etc
+  Variables should typically have both a default fg and bg
+***********************************************************************/
+/*
+ * Header
+ */
+#logo {
+  /* Wrapping link for logo */
+  float: right;
+}
+
+/*
+ * Content
+ */
+ul.inline li {
+  /* List of links */
+  display: inline-block;
+  /* Bug in Safari causes display: inline to fail. */
+  padding: 0 0 0 1em;
+}
+
+span.field-label {
+  /* The inline field label used by the Fences.module */
+  padding: 0 0 0 1em;
+}

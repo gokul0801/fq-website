@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the FQ Groups feature.
+ */
+
+include_once 'fq_groups.features.inc';

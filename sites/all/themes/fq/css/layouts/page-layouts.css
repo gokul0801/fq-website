@@ -1,0 +1,205 @@
+/* Put all our custom theme variables in this file
+   All theme variables can be overridden here that have the property:  !default
+
+*/
+/***********************************************************************
+  LAYOUT VARIABLES
+***********************************************************************/
+/* --------------------------------------------------------------desktop
+*/
+/* ---------------------------------------------------------------tablet
+*/
+/* -----------------------------------------------------------------cell
+*/
+/***********************************************************************
+  PRESENTATION VARIABLES
+***********************************************************************/
+/* --------------------------------------------------------------desktop
+*/
+/* ---------------------------------------------------------------tablet
+*/
+/* -----------------------------------------------------------------cell
+*/
+/***********************************************************************
+  FONTS
+***********************************************************************/
+/***********************************************************************
+  COLORS
+
+  Organize by section
+    e.g, page, navigation, sidebar, footer, form, etc
+  Variables should typically have both a default fg and bg
+***********************************************************************/
+#header,
+#content,
+#navigation,
+.region-sidebar-first,
+.region-sidebar-second,
+#footer {
+  padding-left: 40px;
+  padding-right: 40px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
+  word-wrap: break-word;
+}
+
+#header:before, #header:after,
+#main:before,
+#main:after,
+#footer:before,
+#footer:after {
+  content: "";
+  display: table;
+}
+#header:after,
+#main:after,
+#footer:after {
+  clear: both;
+}
+
+/*
+ * PAGE LAYOUTS
+ */
+.view-teams {
+  padding: 0 1em;
+}
+.view-teams .views-field {
+  padding: 0.5em 0;
+}
+.view-teams .views-field-title {
+  font-size: 2em;
+  font-family: DINWeb-Bold;
+}
+.view-teams .views-field-field-team-image img {
+  max-width: 100%;
+  width: 100%;
+}
+.view-teams .views-row {
+  display: inline;
+}
+.view-teams .views-field-body *,
+.view-teams .views-field-body,
+.view-teams .views-field-path *,
+.view-teams .views-field-path {
+  display: inline;
+}
+.view-teams a:link, .view-teams a:visited, .view-teams a:active {
+  text-decoration: none;
+  color: #000;
+  font-family: DINWeb-Bold;
+}
+
+.view-partners-listing-page .field-name-field-partner-image-field {
+  float: left;
+  margin-right: 1em;
+}
+.view-partners-listing-page .attachment-before .views-field-title .field-content {
+  display: block;
+  text-align: center;
+  color: #000;
+  font-size: 2.5em;
+}
+
+.view-team-bios {
+  padding: 0 1em;
+}
+.view-team-bios .attachment-before .views-field-title {
+  text-align: center;
+  font-size: 2em;
+}
+.view-team-bios .attachment-after .field-name-field-team-member-image {
+  float: left;
+  margin-right: 1em;
+}
+.view-team-bios .attachment-after .views-field-title {
+  float: left;
+  margin-right: 0.5em;
+}
+.view-team-bios .attachment-after .views-field-edit-node {
+  clear: left;
+}
+.view-team-bios .attachment-after .field-name-body * {
+  display: inline;
+  clear: left;
+}
+
+/*
+ * Individual Nodes
+ */
+.node-quarterly-video-updates .field-name-body {
+  float: left;
+}
+
+/**
+ * styling for newsletters
+ * TZ 6/18/13
+ */
+div.block-mailchimp-lists h2.block-title {
+  display: none;
+}
+
+.region-sidebar-second form {
+  border: 2px solid black;
+  padding: 10px;
+}
+
+.region-sidebar-second input.form-submit {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/**
+ * styling to help Tim on landing pages
+ * TZ 6/18/13
+ */
+div.attachment.attachment-before div.view-id-strategy:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+  width: 95%;
+}
+
+div.attachment.attachment-before div.view-id-strategy div.views-row {
+  margin-bottom: 25px;
+}
+
+div.attachment.attachment-before div.view-id-strategy div.views-field-title {
+  margin-bottom: 10px;
+}
+
+div.attachment.attachment-before div.view-id-strategy div.views-field-body {
+  display: inline;
+}
+
+div.attachment.attachment-before div.view-id-strategy div.views-field-body * {
+  display: inline;
+}
+
+div.attachment.attachment-before div.view-id-strategy div.views-field-body * p {
+  display: inline;
+}
+
+div.attachment.attachment-before div.view-id-strategy div.views-field-title-1 {
+  display: inline;
+}
+
+div.attachment.attachment-before div.view-id-strategy div.views-field-title-1 * {
+  display: inline;
+}
+
+div.attachment.attachment-after div.view-display-id-sidebar_1 {
+  background-color: #aaa;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+div.attachment.attachment-after div.view-display-id-sidebar_2 {
+  background-color: #aaa;
+  padding: 10px;
+}
+
+div.attachment.attachment-after div.views-row div.field-content span.file {
+  float: right;
+}

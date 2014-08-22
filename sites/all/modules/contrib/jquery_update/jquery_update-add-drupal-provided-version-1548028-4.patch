@@ -1,0 +1,60 @@
+diff --git a/htdocs/profiles/flowdistro/modules/jquery_update/jquery_update.module b/htdocs/profiles/flowdistro/modules/jquery_update/jquery_update.module
+index 76644f8..55de511 100644
+--- a/htdocs/profiles/flowdistro/modules/jquery_update/jquery_update.module
++++ b/htdocs/profiles/flowdistro/modules/jquery_update/jquery_update.module
+@@ -96,6 +96,11 @@ function jquery_update_library_alter(&$javascript, $module) {
+     }
+   }
+ 
++  // Don't replace anything if Drupal provided jQuery should be used
++  if('default' == $version) {
++    return;
++  }
++
+   // Always add a new jquery_version array to ajaxPageState.
+   // This is what we used to determine which version to use
+   // for any ajax callback.
+@@ -156,6 +161,7 @@ function jquery_update_settings_form() {
+     '#type' => 'select',
+     '#title' => t('Default jQuery Version'),
+     '#options' => array(
++      'default' => t('Default (provided by Drupal)'),
+       '1.5' => '1.5',
+       '1.7' => '1.7',
+       '1.8' => '1.8',
+@@ -168,7 +174,8 @@ function jquery_update_settings_form() {
+     '#type' => 'select',
+     '#title' => t('Alternate jQuery version for administrative pages'),
+     '#options' => array(
+-      '' => t('Use the default'),
++      '' => t('Default jQuery Version'),
++      'default' => t('Default (provided by Drupal)'),
+       '1.5' => '1.5',
+       '1.7' => '1.7',
+       '1.8' => '1.8',
+@@ -184,6 +191,12 @@ function jquery_update_settings_form() {
+       'min' => t('Production (minified)'),
+       'none' => t('Development (uncompressed)'),
+     ),
++    // Do not show this field if jQuery version is default
++    '#states' => array(
++      'invisible' => array(
++        ':input[name=jquery_update_jquery_version]' => array('value' => "default"),
++      ),
++    ),
+     '#default_value' => variable_get('jquery_update_compression_type', 'min'),
+   );
+   $form['jquery_update_jquery_cdn'] = array(
+@@ -195,6 +208,12 @@ function jquery_update_settings_form() {
+       'microsoft' => t('Microsoft'),
+       'jquery' => t('jQuery'),
+     ),
++    // Do not show this field if jQuery version is default
++    '#states' => array(
++      'invisible' => array(
++        ':input[name=jquery_update_jquery_version]' => array('value' => "default"),
++      ),
++    ),
+     '#default_value' => variable_get('jquery_update_jquery_cdn', 'none'),
+     '#description' => t('Use jQuery and jQuery UI from a CDN. If the CDN is not available the local version of jQuery and jQuery UI will be used.'),
+   );
